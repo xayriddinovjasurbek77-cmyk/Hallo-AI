@@ -1,0 +1,6 @@
+{
+  "name": "HALLO",
+  "description": "Kundalik hayotiy vazifalar uchun ko‘p tilli, klassik uslubdagi AI yordamchi platformasi.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
