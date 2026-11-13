@@ -40,20 +40,32 @@ export function AssistantTool({ language, t, errT }: AssistantToolProps) {
       setInput('');
     }
 
-    const userMsg: AssistantMessage = {
-      id: `user-${Date.now()}`,
-      role: 'user',
-      text: query,
-    };
+    const lastMsg = messages[messages.length - 1];
+    const isRetryingUnanswered = Boolean(lastMsg && lastMsg.role === 'user' && lastMsg.text === query);
 
-    const nextHistory = [...messages, userMsg];
-    setMessages(nextHistory);
+    const lastModelIdx = messages.reduce(
+      (idx, m, i) => (m.role === 'model' ? i : idx),
+      -1
+    );
+    const historyForApi = (lastModelIdx >= 0 ? messages.slice(0, lastModelIdx + 1) : []).map((m) => ({
+      role: m.role,
+      text: m.text,
+    }));
+
+    if (!isRetryingUnanswered) {
+      const userMsg: AssistantMessage = {
+        id: `user-${Date.now()}`,
+        role: 'user',
+        text: query,
+      };
+      setMessages((prev) => [...prev, userMsg]);
+    }
     setLoading(true);
 
     try {
       const data = await postJson<{ reply: string }>('/api/ai/assistant', {
         message: query,
-        history: messages.map((m) => ({ role: m.role, text: m.text })),
+        history: historyForApi,
         language,
       });
 

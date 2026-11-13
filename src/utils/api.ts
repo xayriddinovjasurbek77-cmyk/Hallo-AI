@@ -12,15 +12,24 @@ export class ApiClientError extends Error {
 }
 
 export async function postJson<TResponse>(url: string, body: unknown): Promise<TResponse> {
+  const controller = new AbortController();
+  const timeoutId = window.setTimeout(() => controller.abort(), 54000);
+
   let response: Response;
   try {
     response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
+      signal: controller.signal,
     });
-  } catch {
+  } catch (err) {
+    if (err instanceof DOMException && err.name === 'AbortError') {
+      throw new ApiClientError('TIMEOUT', 504, 'Request timed out');
+    }
     throw new ApiClientError('NETWORK_ERROR', 0, 'Network request failed');
+  } finally {
+    window.clearTimeout(timeoutId);
   }
 
   let data: Record<string, unknown> = {};
@@ -42,6 +51,8 @@ export async function postJson<TResponse>(url: string, body: unknown): Promise<T
 export function resolveLocalizedError(err: unknown, t: TranslationSchema['errors']): string {
   if (err instanceof ApiClientError) {
     if (err.code === 'NETWORK_ERROR') return t.network;
+    if (err.code === 'TIMEOUT') return t.timeout;
+    if (err.code === 'SERVICE_UNAVAILABLE') return t.serviceUnavailable;
     if (err.code === 'RATE_LIMIT') return t.rateLimit;
     if (err.code === 'API_KEY_ERROR') return t.apiKey;
     return t.server;

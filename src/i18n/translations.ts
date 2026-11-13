@@ -263,6 +263,8 @@ export interface TranslationSchema {
   errors: {
     network: string;
     server: string;
+    serviceUnavailable: string;
+    timeout: string;
     rateLimit: string;
     apiKey: string;
     unknown: string;
@@ -555,6 +557,8 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
     errors: {
       network: 'Tarmoq bilan bog‘lanishda xatolik yuz berdi. Internet aloqasini tekshiring.',
       server: 'Server javob berishda muammoga uchradi. Birozdan so‘ng qayta urinib ko‘ring.',
+      serviceUnavailable: 'AI xizmati hozir band. Bir necha soniyadan so‘ng qayta urinib ko‘ring.',
+      timeout: 'So‘rovga javob kutish vaqti tugadi. Iltimos, qayta urinib ko‘ring.',
       rateLimit: 'So‘rovlar soni vaqtinchalik cheklandi. Bir necha soniyadan so‘ng urinib ko‘ring.',
       apiKey: 'AI xizmati hozircha sozlanmagan. Iltimos, sozlamalarni tekshiring.',
       unknown: 'Kutilmagan xatolik yuz berdi.',
@@ -845,6 +849,8 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
     errors: {
       network: 'Unable to reach the server. Please check your connection and try again.',
       server: 'The server encountered an issue processing your request. Please try again.',
+      serviceUnavailable: 'The AI service is temporarily busy. Please try again in a few seconds.',
+      timeout: 'The request took too long to respond. Please try again.',
       rateLimit: 'Too many requests at once. Please wait a moment and try again.',
       apiKey: 'AI service configuration is unavailable. Please check the environment setup.',
       unknown: 'An unexpected error occurred.',
@@ -1135,6 +1141,8 @@ export const TRANSLATIONS: Record<Language, TranslationSchema> = {
     errors: {
       network: 'Не удалось связаться с сервером. Проверьте подключение к интернету.',
       server: 'Сервер столкнулся с ошибкой при обработке запроса. Попробуйте ещё раз.',
+      serviceUnavailable: 'Сервис AI временно перегружен. Повторите попытку через несколько секунд.',
+      timeout: 'Время ожидания ответа истекло. Пожалуйста, попробуйте ещё раз.',
       rateLimit: 'Слишком много запросов подряд. Подождите несколько секунд и повторите.',
       apiKey: 'Сервис AI не настроен. Проверьте конфигурацию окружения.',
       unknown: 'Произошла непредвиденная ошибка.',
